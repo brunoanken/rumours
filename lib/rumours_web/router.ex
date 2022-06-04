@@ -5,8 +5,10 @@ defmodule RumoursWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", RumoursWeb do
+  scope "/v1", RumoursWeb do
     pipe_through :api
+
+    post "/users", UserController, :create
   end
 
   # Enables LiveDashboard only for development
