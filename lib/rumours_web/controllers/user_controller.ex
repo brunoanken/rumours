@@ -12,4 +12,22 @@ defmodule RumoursWeb.UserController do
       |> send_resp(:created, "")
     end
   end
+
+  def login(conn, %{"email" => email, "password" => password}) do
+    with {:ok, %User{} = user} <- Accounts.login(email, password) do
+      conn
+      |> put_status(200)
+      |> put_resp_cookie("rumid", %{id: user.id, email: user.email, username: user.username},
+        http_only: true,
+        secure: true,
+        # 1 week
+        max_age: 604_800,
+        domain: conn.host,
+        encrypt: true
+      )
+      |> render("show.json", %{user: user})
+    else
+      _ -> {:error, :unauthorized}
+    end
+  end
 end

@@ -1,5 +1,6 @@
 defmodule Rumours.Accounts.RepoAdapterTest do
   use Rumours.DataCase
+  import Rumours.AccountsFixtures
 
   alias Rumours.Accounts.{RepoAdapter, User}
 
@@ -62,6 +63,17 @@ defmodule Rumours.Accounts.RepoAdapterTest do
                |> RepoAdapter.create_user()
 
       assert %{username: ["has already been taken"]} = errors_on(changeset)
+    end
+  end
+
+  describe "get_user_by/1" do
+    test "returns a user when data matches an existing user" do
+      user = user_fixture()
+      assert %User{} = RepoAdapter.get_user_by(email: user.email)
+    end
+
+    test "returns nothing when data does not match an existing user" do
+      refute RepoAdapter.get_user_by(email: "random@email.com")
     end
   end
 end

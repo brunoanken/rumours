@@ -24,4 +24,26 @@ defmodule Rumours.Accounts do
     |> User.changeset(attrs)
     |> RepoAdapter.create_user()
   end
+
+  @doc """
+  Authenticates a user.
+
+  ## Examples
+
+      iex> login("valid@email.com", "correctpass")
+      {:ok, %User{}}
+
+      iex> create_user("valid@email.com", "wrongpass")
+      {:error, :unauthorized}
+
+  """
+  def login(email, password) do
+    %{email: email}
+    |> RepoAdapter.get_user_by()
+    |> Argon2.check_pass(password)
+    |> case do
+      {:ok, %User{} = user} -> {:ok, user}
+      error -> error
+    end
+  end
 end

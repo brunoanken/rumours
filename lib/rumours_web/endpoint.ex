@@ -6,8 +6,9 @@ defmodule RumoursWeb.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_rumours_key",
-    signing_salt: "SYJM3xV4"
+    key: "rumid",
+    signing_salt: "SYJM3xV4",
+    encryption_salt: "HSJvhPLk"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]

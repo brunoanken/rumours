@@ -8,11 +8,6 @@ defmodule Rumours.Accounts.UserTest do
     username: "Biruleibe"
   }
 
-  @invalid_attrs %{
-    email: "tafi.com",
-    password: ""
-  }
-
   describe "changeset/2" do
     test "returns with errors when email is not provided" do
       changeset = User.changeset(%User{}, %{email: ""})

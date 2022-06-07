@@ -9,6 +9,7 @@ defmodule RumoursWeb.Router do
     pipe_through :api
 
     post "/users", UserController, :create
+    post "/login", UserController, :login
   end
 
   # Enables LiveDashboard only for development
