@@ -15,7 +15,8 @@ defmodule Rumours.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Rumours.PubSub},
       # Start the Endpoint (http/https)
-      RumoursWeb.Endpoint
+      RumoursWeb.Endpoint,
+      {Finch, name: Rumours.Finch}
       # Start a worker by calling: Rumours.Worker.start_link(arg)
       # {Rumours.Worker, arg}
     ]
