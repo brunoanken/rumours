@@ -11,5 +11,10 @@ defmodule Rumours.Accounts.RepoAdapter do
     |> Repo.insert()
   end
 
-  def get_user_by(params), do: Repo.get_by(User, params)
+  def get_user_by(params) do
+    case Repo.get_by(User, params) do
+      %User{} = user -> {:ok, user}
+      nil -> {:error, :not_found}
+    end
+  end
 end

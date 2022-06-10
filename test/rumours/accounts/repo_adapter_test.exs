@@ -69,11 +69,11 @@ defmodule Rumours.Accounts.RepoAdapterTest do
   describe "get_user_by/1" do
     test "returns a user when data matches an existing user" do
       user = user_fixture()
-      assert %User{} = RepoAdapter.get_user_by(email: user.email)
+      assert {:ok, %User{}} = RepoAdapter.get_user_by(email: user.email)
     end
 
-    test "returns nothing when data does not match an existing user" do
-      refute RepoAdapter.get_user_by(email: "random@email.com")
+    test "returns not found error when data does not match an existing user" do
+      assert {:error, :not_found} = RepoAdapter.get_user_by(email: "random@email.com")
     end
   end
 end
