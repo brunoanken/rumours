@@ -28,9 +28,11 @@ defmodule Rumours.Accounts.User do
     |> put_password_hash()
   end
 
-  def put_password_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
+  defp put_password_hash(
+         %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
+       ) do
     change(changeset, Argon2.add_hash(password))
   end
 
-  def put_password_hash(changeset), do: changeset
+  defp put_password_hash(changeset), do: changeset
 end

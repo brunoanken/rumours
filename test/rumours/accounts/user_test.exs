@@ -47,14 +47,4 @@ defmodule Rumours.Accounts.UserTest do
       refute is_nil(password_hash)
     end
   end
-
-  describe "put_password_hash/1" do
-    test "puts the password_hash when changeset is valid" do
-      %Ecto.Changeset{changes: %{password_hash: password_hash}} =
-        %User{} |> User.changeset(@valid_attrs) |> User.put_password_hash()
-
-      assert password_hash != ""
-      refute is_nil(password_hash)
-    end
-  end
 end
