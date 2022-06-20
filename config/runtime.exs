@@ -65,14 +65,8 @@ if config_env() == :prod do
 
   # ## Configuring the mailer
   #
-  # In production you need to configure the mailer to use a different adapter.
-  # Also, you may need to configure the Swoosh API client of your choice if you
-  # are not using SMTP. Here is an example of the configuration:
-  #
 
-  config :rumours, Rumours.Mailer,
-    adapter: Swoosh.Adapters.Sendgrid,
-    api_key: System.get_env("SENDGRID_API_KEY")
+  config :rumours, Rumours.Mailer, adapter: Swoosh.Adapters.Local
 
   config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Rumours.Finch
 end

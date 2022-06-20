@@ -32,3 +32,6 @@ config :phoenix, :plug_init_mode, :runtime
 config :argon2_elixir,
   t_cost: 1,
   m_cost: 8
+
+config :rumours, :token, new_account_salt: "tokennewaccounts@lttest"
+config :rumours, :website, domain: "website_domain_test"

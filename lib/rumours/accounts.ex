@@ -5,7 +5,8 @@ defmodule Rumours.Accounts do
 
   import Ecto.Query, warn: false
 
-  alias Rumours.Accounts.{RepoAdapter, User}
+  alias Rumours.Accounts.{RepoAdapter, User, Mailer}
+  alias Rumours.Token
 
   @doc """
   Creates a user.
@@ -20,9 +21,19 @@ defmodule Rumours.Accounts do
 
   """
   def create_user(attrs \\ %{}) do
-    %User{}
-    |> User.changeset(attrs)
-    |> RepoAdapter.create_user()
+    with {:ok, %User{} = user} <-
+           %User{}
+           |> User.changeset(attrs)
+           |> RepoAdapter.create_user(),
+         {:ok, token} <- Token.generate_new_account_token(user),
+         {:ok, _response} <-
+           Mailer.deliver_welcome_user(
+             user,
+             token,
+             Application.get_env(:rumours, :website)[:domain]
+           ) do
+      {:ok, user}
+    end
   end
 
   @doc """
@@ -38,11 +49,10 @@ defmodule Rumours.Accounts do
 
   """
   def login(email, password) do
-    %{email: email}
-    |> RepoAdapter.get_user_by()
-    |> Argon2.check_pass(password)
-    |> case do
-      {:ok, %User{} = user} -> {:ok, user}
+    with {:ok, %User{} = user} <- RepoAdapter.get_user_by(email: email),
+         {:ok, _user} <- Argon2.check_pass(user, password) do
+      {:ok, user}
+    else
       error -> error
     end
   end

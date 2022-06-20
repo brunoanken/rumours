@@ -22,7 +22,7 @@ config :rumours, RumoursWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4000],
   check_origin: false,
   code_reloader: true,
-  debug_errors: true,
+  debug_errors: false,
   secret_key_base: "ABFjIGi4k+RCxF3l/4inANcoRBunVI4MtsACkDVfN4rdyWIOyQK0w8L/+EsESSww",
   watchers: []
 
@@ -59,3 +59,6 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :rumours, :token, new_account_salt: "tokennewaccounts@ltdev"
+config :rumours, :website, domain: "website_domain_dev"

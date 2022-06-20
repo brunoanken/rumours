@@ -12,3 +12,5 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 ## Notes
   Set a `secret_key_base` env variable when deploying.
+  Set the needed Sendgrid env variables when deploying.
+  Set the new account token salt env variable when deploying.
