@@ -45,7 +45,8 @@ defmodule Rumours.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:argon2_elixir, "~> 3.0"},
-      {:finch, "~> 0.12"}
+      {:finch, "~> 0.12"},
+      {:oban, "~> 2.12"}
     ]
   end
 

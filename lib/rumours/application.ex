@@ -8,17 +8,12 @@ defmodule Rumours.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Start the Ecto repository
       Rumours.Repo,
-      # Start the Telemetry supervisor
       RumoursWeb.Telemetry,
-      # Start the PubSub system
       {Phoenix.PubSub, name: Rumours.PubSub},
-      # Start the Endpoint (http/https)
       RumoursWeb.Endpoint,
-      {Finch, name: Rumours.Finch}
-      # Start a worker by calling: Rumours.Worker.start_link(arg)
-      # {Rumours.Worker, arg}
+      {Finch, name: Rumours.Finch},
+      {Oban, Application.fetch_env!(:rumours, Oban)}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
