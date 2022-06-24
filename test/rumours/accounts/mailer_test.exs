@@ -2,12 +2,13 @@ defmodule Rumours.Accounts.MailerTest do
   use ExUnit.Case, async: true
   import Swoosh.TestAssertions
 
-  alias Rumours.Accounts.{Mailer, User}
+  alias Rumours.Accounts.Mailer
 
   test "deliver_welcome_user/1" do
     assert {:ok, _response} =
              Mailer.deliver_welcome_user(
-               %User{username: "cool_user", email: "cool_user@email.com"},
+               "cool_user@email.com",
+               "cool_user",
                "confirmation_token",
                "website_confirmation_address"
              )

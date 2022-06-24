@@ -64,9 +64,9 @@ if config_env() == :prod do
     secret_key_base: secret_key_base
 
   # ## Configuring the mailer
-  #
-
-  config :rumours, Rumours.Mailer, adapter: Swoosh.Adapters.Local
+  config :rumours, Rumours.Mailer,
+    adapter: Swoosh.Adapters.Sendgrid,
+    api_key: System.fetch_env!("SENDGRID_API_KEY")
 
   config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Rumours.Finch
 end
