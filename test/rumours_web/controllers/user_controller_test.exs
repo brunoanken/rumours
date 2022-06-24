@@ -53,7 +53,6 @@ defmodule RumoursWeb.UserControllerTest do
       assert String.contains?(cookie, "rumid=")
       assert String.contains?(cookie, "secure")
       assert String.contains?(cookie, "HttpOnly")
-      assert String.contains?(cookie, "max-age=604800")
     end
   end
 end

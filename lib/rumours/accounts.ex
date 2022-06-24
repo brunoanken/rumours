@@ -5,7 +5,7 @@ defmodule Rumours.Accounts do
 
   import Ecto.Query, warn: false
 
-  alias Rumours.Accounts.{RepoAdapter, User, Mailer}
+  alias Rumours.Accounts.{RepoAdapter, User, Scheduler}
   alias Rumours.Token
 
   @doc """
@@ -21,14 +21,15 @@ defmodule Rumours.Accounts do
 
   """
   def create_user(attrs \\ %{}) do
-    with {:ok, %User{} = user} <-
+    with {:ok, %User{email: email, username: username} = user} <-
            %User{}
            |> User.changeset(attrs)
            |> RepoAdapter.create_user(),
          {:ok, token} <- Token.generate_new_account_token(user),
-         {:ok, _response} <-
-           Mailer.deliver_welcome_user(
-             user,
+         {:ok, _oban_job} <-
+           Scheduler.deliver_welcome_user_email(
+             email,
+             username,
              token,
              Application.get_env(:rumours, :website)[:domain]
            ) do

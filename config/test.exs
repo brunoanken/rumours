@@ -36,4 +36,4 @@ config :argon2_elixir,
 config :rumours, :token, new_account_salt: "tokennewaccounts@lttest"
 config :rumours, :website, domain: "website_domain_test"
 
-config :rumours, Oban, testing: :inline
+config :rumours, Oban, testing: :manual

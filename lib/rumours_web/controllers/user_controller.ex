@@ -17,7 +17,9 @@ defmodule RumoursWeb.UserController do
     with {:ok, %User{} = user} <- Accounts.login(email, password) do
       conn
       |> put_status(200)
-      |> put_resp_cookie("rumid", %{id: user.id, email: user.email, username: user.username},
+      |> put_resp_cookie(
+        "rumid",
+        %{id: user.id, email: user.email, username: user.username},
         http_only: true,
         secure: true,
         # 1 week

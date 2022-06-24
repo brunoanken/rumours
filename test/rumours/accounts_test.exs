@@ -1,6 +1,6 @@
 defmodule Rumours.AccountsTest do
   use Rumours.DataCase
-  import Swoosh.TestAssertions
+  use Rumours.Case
 
   alias Rumours.Accounts
 
@@ -26,10 +26,13 @@ defmodule Rumours.AccountsTest do
       assert {:error, %Ecto.Changeset{}} = Accounts.create_user(@invalid_attrs)
     end
 
-    test "create_user/1 sends a welcome email when credentials are valid" do
+    test "create_user/1 schedules the delivery of a welcome email when credentials are valid" do
       Accounts.create_user(@valid_attrs)
 
-      assert_email_sent(subject: "Welcome to Rumours, cool_name!")
+      assert_enqueued(
+        worker: Rumours.Accounts.Workers.WelcomeUserMailer,
+        queue: :emails
+      )
     end
 
     test "login/2 with invalid credentials returns unauthorized error" do

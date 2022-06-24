@@ -1,6 +1,6 @@
 defmodule Rumours.Accounts.SchedulerTest do
   use Rumours.DataCase
-  use Oban.Testing, repo: Rumours.Repo
+  use Rumours.Case
 
   alias Rumours.Accounts.Scheduler
 
