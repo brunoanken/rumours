@@ -14,7 +14,8 @@ defmodule RumoursWeb.UserView do
     %{
       id: user.id,
       email: user.email,
-      username: user.username
+      username: user.username,
+      confirmed_at: user.confirmed_at
     }
   end
 end

@@ -16,7 +16,7 @@ defmodule RumoursWeb.UserController do
   def login(conn, %{"email" => email, "password" => password}) do
     with {:ok, %User{} = user} <- Accounts.login(email, password) do
       conn
-      |> put_status(200)
+      |> put_status(:ok)
       |> put_resp_cookie(
         "rumid",
         %{id: user.id, email: user.email, username: user.username},
@@ -30,6 +30,14 @@ defmodule RumoursWeb.UserController do
       |> render("show.json", %{user: user})
     else
       _ -> {:error, :unauthorized}
+    end
+  end
+
+  def confirm(conn, %{"token" => token}) do
+    with {:ok, %User{} = user} <- Accounts.confirm_user(token) do
+      conn
+      |> put_status(:ok)
+      |> render("show.json", %{user: user})
     end
   end
 end

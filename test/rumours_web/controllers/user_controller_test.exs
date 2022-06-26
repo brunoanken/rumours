@@ -3,6 +3,8 @@ defmodule RumoursWeb.UserControllerTest do
 
   import Rumours.AccountsFixtures
 
+  alias Rumours.Token
+
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
@@ -29,14 +31,14 @@ defmodule RumoursWeb.UserControllerTest do
   describe "login" do
     test "renders unauthorized when credentials are invalid", %{conn: conn} do
       user = user_fixture()
-      conn = post(conn, "/v1/login", %{email: user.email, password: "wrong_pass"})
+      conn = post(conn, "/v1/users/login", %{email: user.email, password: "wrong_pass"})
       assert conn.resp_body == ""
       assert conn.status == 401
     end
 
     test "renders a proper response when credentials are valid", %{conn: conn} do
       user = user_fixture()
-      conn = post(conn, "/v1/login", %{email: user.email, password: user.password})
+      conn = post(conn, "/v1/users/login", %{email: user.email, password: user.password})
       assert response = json_response(conn, 200)
       assert response["email"] == user.email
       assert response["id"] == user.id
@@ -45,7 +47,7 @@ defmodule RumoursWeb.UserControllerTest do
 
     test "sends a secure cookie to the client", %{conn: conn} do
       user = user_fixture()
-      conn = post(conn, "/v1/login", %{email: user.email, password: user.password})
+      conn = post(conn, "/v1/users/login", %{email: user.email, password: user.password})
 
       {_, cookie} =
         Enum.find(conn.resp_headers, fn {header_name, _} -> header_name === "set-cookie" end)
@@ -53,6 +55,28 @@ defmodule RumoursWeb.UserControllerTest do
       assert String.contains?(cookie, "rumid=")
       assert String.contains?(cookie, "secure")
       assert String.contains?(cookie, "HttpOnly")
+    end
+  end
+
+  describe "confirm/2" do
+    test "renders a user when user is successfuly confirmed", %{conn: conn} do
+      user = user_fixture()
+      {:ok, token} = Token.generate_new_account_token(user)
+
+      conn = patch(conn, "/v1/users/confirm/#{token}")
+      assert response = json_response(conn, 200)
+      assert response["email"] == user.email
+      assert response["id"] == user.id
+      assert response["username"] == user.username
+      refute is_nil(response["confirmed_at"])
+    end
+
+    test "renders an error when user confirmation fails", %{conn: conn} do
+      token = "b136b53e-7397-4e61-be9e-3d44e311da15"
+
+      conn = patch(conn, "/v1/users/confirm/#{token}")
+      assert response = json_response(conn, 400)
+      refute is_nil(response["errors"])
     end
   end
 end

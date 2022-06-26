@@ -47,4 +47,13 @@ defmodule Rumours.Accounts.UserTest do
       refute is_nil(password_hash)
     end
   end
+
+  describe "confirm_user_changeset/2" do
+    test "returns a valid changeset with changes on the confirmed_at field" do
+      user = %User{email: "valid@email.com", username: "user_name", confirmed_at: nil}
+
+      assert %Ecto.Changeset{valid?: true, changes: %{confirmed_at: _}} =
+               User.confirm_changeset(user)
+    end
+  end
 end

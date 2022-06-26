@@ -28,6 +28,11 @@ defmodule Rumours.Accounts.User do
     |> put_password_hash()
   end
 
+  def confirm_changeset(user) do
+    user
+    |> change(confirmed_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second))
+  end
+
   defp put_password_hash(
          %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
        ) do

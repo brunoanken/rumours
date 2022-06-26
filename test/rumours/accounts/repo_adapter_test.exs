@@ -76,4 +76,17 @@ defmodule Rumours.Accounts.RepoAdapterTest do
       assert {:error, :not_found} = RepoAdapter.get_user_by(email: "random@email.com")
     end
   end
+
+  describe "update_user/1" do
+    test "updates the user when data is valid" do
+      user = user_fixture()
+
+      refute user.confirmed_at
+
+      assert {:ok, %User{confirmed_at: confirmed_at}} =
+               user |> User.confirm_changeset() |> RepoAdapter.update_user()
+
+      refute is_nil(confirmed_at)
+    end
+  end
 end

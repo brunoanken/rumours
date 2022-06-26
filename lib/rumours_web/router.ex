@@ -8,8 +8,11 @@ defmodule RumoursWeb.Router do
   scope "/v1", RumoursWeb do
     pipe_through :api
 
-    post "/users", UserController, :create
-    post "/login", UserController, :login
+    scope "/users" do
+      post "/", UserController, :create
+      post "/login", UserController, :login
+      patch "/confirm/:token", UserController, :confirm
+    end
   end
 
   # Enables LiveDashboard only for development

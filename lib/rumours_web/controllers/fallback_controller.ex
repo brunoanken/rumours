@@ -26,4 +26,11 @@ defmodule RumoursWeb.FallbackController do
     conn
     |> send_resp(:unauthorized, "")
   end
+
+  def call(conn, {:error, :invalid}) do
+    conn
+    |> put_status(:bad_request)
+    |> put_view(RumoursWeb.ErrorView)
+    |> render(:"400")
+  end
 end

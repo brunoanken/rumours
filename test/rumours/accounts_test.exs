@@ -1,8 +1,8 @@
 defmodule Rumours.AccountsTest do
-  use Rumours.DataCase
+  use Rumours.DataCase, async: true
   use Rumours.Case
 
-  alias Rumours.Accounts
+  alias Rumours.{Accounts, Token}
 
   describe "users" do
     alias Rumours.Accounts.User
@@ -49,6 +49,14 @@ defmodule Rumours.AccountsTest do
 
     test "login/2 with inexistent user returns not found error" do
       assert {:error, :not_found} = Accounts.login("any@email.com", "pass")
+    end
+
+    test "confirm_user/1 confirms the user when token is valid" do
+      user = user_fixture(%{email: "valid@email.com", password: "mypass"})
+      {:ok, token} = Token.generate_new_account_token(user)
+
+      assert {:ok, %User{confirmed_at: confirmed_at}} = Accounts.confirm_user(token)
+      refute is_nil(confirmed_at)
     end
   end
 end

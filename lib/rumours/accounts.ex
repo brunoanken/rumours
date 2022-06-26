@@ -53,8 +53,16 @@ defmodule Rumours.Accounts do
     with {:ok, %User{} = user} <- RepoAdapter.get_user_by(email: email),
          {:ok, _user} <- Argon2.check_pass(user, password) do
       {:ok, user}
-    else
-      error -> error
+    end
+  end
+
+  def confirm_user(token) do
+    with {:ok, user_id} <- Token.verify_new_account_token(token),
+         {:ok, %User{} = user} = RepoAdapter.get_user_by(id: user_id) do
+      case user do
+        %User{confirmed_at: nil} -> user |> User.confirm_changeset() |> RepoAdapter.update_user()
+        _ -> {:ok, user}
+      end
     end
   end
 end
