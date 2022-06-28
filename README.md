@@ -11,6 +11,12 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
 ## Notes
-  Set a `secret_key_base` env variable when deploying.
-  Set the needed Sendgrid env variables when deploying.
-  Set the new account token salt env variable when deploying.
+  When deploying, set the following environment variables:
+  - PHX_SERVER
+  - DATABASE_URL
+  - SECRET_KEY_BASE
+  - PHX_HOST
+  - SENDGRID_API_KEY
+  - TOKEN_NEW_ACCOUNT_SALT
+  - WEBSITE_DOMAIN
+  - EMAIL_ADDRESS

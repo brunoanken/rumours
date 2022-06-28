@@ -50,3 +50,4 @@ config :logger, level: :info
 
 config :rumours, :token, new_account_salt: System.fetch_env!("TOKEN_NEW_ACCOUNT_SALT")
 config :rumours, :website, domain: System.fetch_env!("WEBSITE_DOMAIN")
+config :rumours, email_address: System.fetch_env!("EMAIL_ADDRESS")
