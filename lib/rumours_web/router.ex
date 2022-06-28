@@ -12,6 +12,7 @@ defmodule RumoursWeb.Router do
       post "/", UserController, :create
       post "/login", UserController, :login
       patch "/confirm/:token", UserController, :confirm
+      post "/logout", UserController, :logout
     end
   end
 

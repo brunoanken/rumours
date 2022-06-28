@@ -40,4 +40,15 @@ defmodule RumoursWeb.UserController do
       |> render("show.json", %{user: user})
     end
   end
+
+  def logout(conn, _) do
+    conn
+    |> delete_resp_cookie(
+      "rumid",
+      http_only: true,
+      secure: true,
+      domain: conn.host
+    )
+    |> send_resp(:ok, "")
+  end
 end

@@ -79,4 +79,19 @@ defmodule RumoursWeb.UserControllerTest do
       refute is_nil(response["errors"])
     end
   end
+
+  describe "logout/2" do
+    test "returns an empty and expired cookie", %{conn: conn} do
+      conn = post(conn, "/v1/users/logout")
+
+      {_, cookie} =
+        Enum.find(conn.resp_headers, fn {header_name, _} -> header_name === "set-cookie" end)
+
+      IO.inspect(cookie)
+      assert String.contains?(cookie, "rumid=;")
+      assert String.contains?(cookie, "max-age=0;")
+      assert String.contains?(cookie, "secure;")
+      assert String.contains?(cookie, "HttpOnly")
+    end
+  end
 end
