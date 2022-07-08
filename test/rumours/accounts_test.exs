@@ -1,6 +1,7 @@
 defmodule Rumours.AccountsTest do
   use Rumours.DataCase, async: true
   use Rumours.Case
+  import Swoosh.TestAssertions
 
   alias Rumours.{Accounts, Token}
 
@@ -32,6 +33,17 @@ defmodule Rumours.AccountsTest do
       assert_enqueued(
         worker: Rumours.Accounts.Workers.WelcomeUserMailer,
         queue: :emails
+      )
+    end
+
+    test "create_user/1 delivers a welcome email when job is processed" do
+      Accounts.create_user(@valid_attrs)
+
+      assert %{success: 1, failure: 0} = Oban.drain_queue(queue: :emails)
+
+      assert_email_sent(
+        subject: "Welcome to Rumours, cool_name!",
+        to: {"cool_name", "valid@email.com"}
       )
     end
 

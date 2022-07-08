@@ -87,7 +87,6 @@ defmodule RumoursWeb.UserControllerTest do
       {_, cookie} =
         Enum.find(conn.resp_headers, fn {header_name, _} -> header_name === "set-cookie" end)
 
-      IO.inspect(cookie)
       assert String.contains?(cookie, "rumid=;")
       assert String.contains?(cookie, "max-age=0;")
       assert String.contains?(cookie, "secure;")
