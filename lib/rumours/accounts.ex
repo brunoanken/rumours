@@ -48,7 +48,7 @@ defmodule Rumours.Accounts do
       iex> login("valid@email.com", "correctpass")
       {:ok, %User{}}
 
-      iex> create_user("valid@email.com", "wrongpass")
+      iex> login("valid@email.com", "wrongpass")
       {:error, :unauthorized}
 
   """
@@ -59,6 +59,19 @@ defmodule Rumours.Accounts do
     end
   end
 
+  @doc """
+  Confirms the user account.
+
+  ## Examples
+
+      iex> confirm_user("valid_token")
+      {:ok, %User{}}
+
+      iex> confirm_user("invalid_token")
+      {:error, :expired}
+      {:error, :invalid}
+
+  """
   def confirm_user(token) do
     with {:ok, user_id} <- Token.verify_new_account_token(token),
          {:ok, %User{} = user} = RepoAdapter.get_user_by(id: user_id) do

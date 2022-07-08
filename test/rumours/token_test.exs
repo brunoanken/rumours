@@ -29,6 +29,10 @@ defmodule Rumours.TokenTest do
       assert {:error, :expired} = Token.verify_new_account_token(token, 1)
     end
 
+    test "errors when token is invalid" do
+      assert {:error, :invalid} = Token.verify_new_account_token("invalid_token", 1)
+    end
+
     test "returns success when token is valid" do
       user_id = "182bea72-b94d-49c0-9046-84b94186f97a"
       {:ok, token} = Token.generate_new_account_token(%User{id: user_id})
